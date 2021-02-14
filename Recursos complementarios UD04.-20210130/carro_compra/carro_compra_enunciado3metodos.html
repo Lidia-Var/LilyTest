@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejemplo </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body>
+    <div id="lista"> 
+        <h2>Lista de productos</h2>
+    </div>
+    <div id="carrito">
+        <h2>Lista de la compra</h2>
+    </div>
+    <div id="totalCompra"><em><b>Total a pagar:</b></em></div>
+    <script>
+/////////////////////////CLASE PRODUCTO/////////////////////////////////////////
+        class Producto{
+            constructor(id, nombre, precio, imagen, stock){
+                this.id=id;
+                this.nombre=nombre;
+                this.precio=precio;
+                this.imagen=imagen;
+                this.stock=stock;
+            }
+
+        }
+         var arrayProductos=[
+             new Producto(1, 'Patata',0.95,'./imagenes/patata.jpg',500),
+             new Producto(2, 'Cebolla', 1.5, './imagenes/cebolla.jpg', 75),
+            new Producto(3, 'Calabacin', 1.25, './imagenes/calabacin.jpg', 45),
+             new Producto(4, 'Grelos', 2.6, './imagenes/grelos.jpg', 25),
+         ];
+
+         
+///////////////////////////CLASE LIMPIEZA///////////////////////////////////////
+           class Limpieza extends Producto {
+
+                constructor(id, nombre, precio, imagen, stock, marca, quimico, toxicidad) {
+                    super(id, nombre, precio, imagen, stock);
+                    this.marca = marca;
+                    this.quimico = quimico;
+                    this.toxicidad = toxicidad;
+                }
+            }
+            var arrayLimpieza = [
+                new Limpieza(0, 'Sanytol', 4, './imagenes/sanytol.jpg', 350, 'Sanytol', true, 50),
+                new Limpieza(1, 'Lejía', 2, './imagenes/lejia.jpg', 100, 'Conejo', false, 80),
+                new Limpieza(2, 'Don Limpio', 7, './imagenes/DonLimpio.jpg', 10, 'Don Limpio', true, 20),
+            ];
+
+////////////////////////////CONCATENO LOS DOS ARRAYS///////////////////
+const arrayCompleto=arrayProductos.concat(arrayLimpieza);
+//////////////////////////////////////////////////////////////////////
+       
+      
+       // Funciones
+       function mostrarProductos() {
+           let lista= document.getElementById("lista");
+           let tablaProductos = `<table border='1'>`;
+               tablaProductos +=`<tr><td> Nombre</td><td> Descripción</td><td> Precio</td><td> Stock</td><td> Marca</td><td> Es Químico?</td><td> Toxicidad</td>`;
+           for (let producto of arrayCompleto) {
+               // Estructura creamos una nueva fila con tres columnas para mostrar producto, precio, imagen  
+               tablaProductos +=`<tr>` ;
+               // Columna nombre
+               tablaProductos += `<td> ${producto['nombre']}</td>`;
+               // Imagen
+               tablaProductos += `<td><img width='40' height='40' src="${producto['imagen']}"></td>`;
+               // Precio
+               tablaProductos += `<td> ${producto['precio']}€</td>`;
+               // Stock
+               tablaProductos += `<td> ${producto.stock}Kg</td>`;
+               //Marca
+               tablaProductos += `<td> ${productoPropiedad(producto.marca)}</td>`;
+               //Químico?
+               tablaProductos += `<td> ${esQuimico(producto.quimico)}</td>`;
+               //toxicidad%
+               tablaProductos += `<td> ${productoPropiedad(producto.toxicidad)}%</td>`;
+               // cerramos fila
+               tablaProductos += `</tr>` ;
+           }
+           tablaProductos += `</table>`;
+           // una vez llenada la tabla la cerramos y la incluimos en el documento.
+           lista.innerHTML += tablaProductos;
+
+           ////cambio la propiedad undefined por vacía.
+           function productoPropiedad(productoPropiedad) {
+               let resultado;
+               if (productoPropiedad == undefined ) {
+                   resultado=  " ";
+               }else{
+                   resultado = productoPropiedad;
+               }
+              return resultado;
+           }
+           ////Cambio true y false por si o no.
+           function esQuimico (productoPropiedad){
+               if (productoPropiedad == undefined) {
+                   resultado = " ";
+               } else {
+                   resultado = productoPropiedad;
+                    if (productoPropiedad==true){
+                        resultado="SI";
+                    }else{
+                        resultado="NO";
+                    }
+                }
+               return resultado;
+           }
+       }
+       let carrito=[];
+       function anadirACarrito(articulo, cantidad) {
+           const arrayUnArticulo=arrayCompleto.filter((producto_i)=>
+           producto_i.nombre==articulo.nombre
+           )
+           arrayUnArticulo.forEach((producto_i) => {
+               precioUnidad=producto_i.precio;
+                console.log("precioUnidad");
+               console.log(precioUnidad);
+               for (i = 0; i < cantidad; i++) {
+               carrito.push(producto_i);
+               }
+               producto_i.stock = producto_i.stock - cantidad;
+           });
+             /* for (j=0; j<arrayCompleto.length; j++){
+               if (arrayCompleto[j].nombre==articulo.nombre){
+                   precioUnidad=articulo.precio;
+                   console.log("precio unidad" + precioUnidad);
+                    for (i = 0; i < cantidad; i++) {
+                         carrito.push(articulo);
+                   } 
+                   arrayCompleto[j].stock=arrayCompleto[j].stock-cantidad;
+                   console.log("stock" + arrayCompleto[j].stock);
+               }
+                }
+             }*/
+              
+           };
+        
+        function mostrarCarrito() {
+             const arrayNombrePrecio2 = carrito.map((producto_i) =>
+                `
+                <dl>
+                    <dt>${producto_i.nombre}</dt>
+                    <dd><em>${producto_i.precio}euros</em></dd>                    
+                </dl>
+                `);
+                document.getElementById("carrito").innerHTML += arrayNombrePrecio2;
+        }
+
+        function calcularTotal() {
+            const totalCarrito =carrito.reduce((producto_i_anterior, producto_i_posterior)=>
+            {
+                if (producto_i_anterior.precio){//si es true
+                    return producto_i_anterior.precio + producto_i_posterior.precio;
+                    //suma objetoPrecio+ObejtoPrecio
+                }else{
+                    return producto_i_anterior + producto_i_posterior.precio;
+                    //suma objeto+objetoPrecio
+                }});
+            document.getElementById("totalCompra").innerHTML += totalCarrito ;
+         }
+
+         ///////////////////////
+         mostrarProductos();
+         anadirACarrito(arrayCompleto[0],2);
+         anadirACarrito(arrayCompleto[6],1);
+         mostrarCarrito();
+         calcularTotal();
+         
+    </script>
+    </body>
+    
+    </html>

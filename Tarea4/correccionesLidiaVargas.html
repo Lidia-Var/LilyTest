@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <title>Tarea DWEC04 Lidia Vargas Reboredo</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <script type="text/javascript">
+class Edificio {
+
+            constructor(calle, numero, codigoPostal) {
+                this.calle = calle;
+                this.numero = numero;
+                this.codigoPostal = codigoPostal;
+                this.plantas = new Array();
+                document.write(`Construido nuevo edificio en calle: ${calle} , nº:${numero}, CP: ${codigoPostal}.<br/>`);
+            } 
+
+            //MÉTODO ORIGINAL SIN CAMBIOS
+             agregarPuertasYplantas(numplantas, numpuertas) {
+                for (var i = 0; i < numplantas; i++) {
+                this.plantas.push(new Array(numpuertas));
+                }
+            }
+
+            //METODO MODIFICADO CON INDICACIONES DE TERESITA
+            agregarPuertasYplantas2(numPlantas, numPuertas){
+             var sumaPlantas=numPlantas+this.plantas.length; //sumoPlantas
+             for (var i=this.plantas.length; i<sumaPlantas; i++){//recorro desde plantas iniciales hasta el total
+                 var arrayPuertas=new Array();
+                 this.plantas.push(arrayPuertas);//push arrayPuertas en array plantas
+
+                for (var j=0; j<numPuertas; j++){//recorro hasta el numero de puertas
+                    this.plantas[i][j]= " ";//pongo vacío al propietario
+                }
+             }
+            }
+
+            imprimir(){
+                 for (var i =0; i <this.plantas.length; i++) {
+                     for( var j=0; j<this.plantas[i].length; j++){
+                       document.write(`Propietario de la puerta: ${j + 1}, de la planta: ${i + 1}, es: ${this.plantas[i][j]} <br/>`);
+                     }
+                 }
+            }
+        }
+
+        var edificioA =new Edificio("calle Coruna", 23, 11111);
+        document.write('<h3>agrego 2 plantas + 3 puertas al edificioA: </h3>');
+        edificioA.agregarPuertasYplantas2(2,3);
+        edificioA.imprimir();
+        document.write('<h3>agrego 1 planta + 2 puertas al MISMO edificioA: </h3>');
+        edificioA.agregarPuertasYplantas2(1, 2);
+        edificioA.imprimir();
+
+</script>
+</body>   
+</html>

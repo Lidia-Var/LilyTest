@@ -1,0 +1,117 @@
+<html>
+    <head>
+        <title>Tarea DWEC04 Lidia Vargas Reboredo</title> <meta charset="utf-8">
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        class Edificio {
+           
+            constructor (calle, numero, codigoPostal){
+                this.calle=calle;
+                this.numero= numero;
+                this.codigoPostal=codigoPostal;
+                this.plantas=new Array();                
+                document.write( `Construido nuevo edificio en calle: ${calle} , nº:${numero}, CP: ${codigoPostal}.<br/>`);
+            }            
+
+            agregarPlantasYPuertas (numplantas, numpuertas){
+				for (var i=0;i<numplantas;i++){ //recorro hasta num plantas
+                    this.plantas.push(new Array(numpuertas)); //push array de puertas en array de plantas,
+                                                             // y como ya estoy metiendo las puertas en las plantas, ya se asigna numero de plantas
+                }
+            }
+
+            imprimirPlantas(){
+                for (var i=0;i<this.plantas.length;i++){ //plantas
+                    for( var j=0; j<this.plantas[i].length;j++){ //puertas   
+                        document.write (`Propietario del piso ${j+1} de la planta: ${i+1}: `);
+                        if(this.plantas[i][j]==undefined){//si no está definido propietario, salta línea.
+                            this.plantas[i][j]=` <br> ` ;
+                            document.write(` ${this.plantas[i][j]} <br>`);
+                        }else{
+                            document.write(` ${this.plantas[i][j]} <br>`);
+                        }
+                    }  
+                }  
+            }   
+
+            modificarCalle(calle){
+                this.calle=calle;
+            }
+
+            modificarNumero(numero){               
+                this.numero=numero;
+            }
+
+            modificarCodigoPostal(codigoPostal){
+                this.codigoPostal=codigoPostal;
+            }
+
+            imprimeCalle(){
+                return this.calle;
+            }
+
+            imprimeNumero(){
+                return this.numero;
+            }
+
+            imprimeCodigoPostal(){
+                return this.codigoPostal;
+            }
+
+            agregarPropietario (nombre,planta,puerta){
+                this.plantas[planta-1][puerta-1]=nombre;   //OJO! restar 1 para que me de la planta/puerta que plantea el ejercicio                            
+                document.write (`${this.plantas[planta-1][puerta-1]} Es ahora el propietario de la puerta ${puerta} de la planta ${planta}. <br/>`);
+            }
+                               
+        }
+    
+        //Instanciamos 3 objetos edificioA, edificioB y edificioC con estos datos:
+        document.write(`<br> Intancias: <br>`);   
+        var edificioA=new Edificio('Garcia Prieto', 58, 15706); 
+        var edificioB=new Edificio('Camino Caneiro', 29, 32004);
+        var edificioC=new Edificio('San Clemente', 's/n', 15705);
+           
+        document.write(` <br> getter:<br>`); 
+        document.write(`El código postal del edificio A es ${edificioA.imprimeCodigoPostal()}<br/>`);
+        document.write(`La calle del edificio C es: ${edificioC.imprimeCalle()}<br/>`);
+        document.write(`El edificio B está situado en la calle ${edificioB.imprimeCalle()}, numero ${edificioB.imprimeNumero()}<br>`);
+     
+
+        //Agregamos 2 plantas y 3 puertas por planta al edificio A...
+        document.write(` <br> Agregar 2 plantas y 3 puertas():<br> `); 
+        edificioA.agregarPlantasYPuertas(2,3);
+             
+
+        //Agregamos 4 propietarios al edificio A...
+        document.write(` <br> AgregaPropietarios():<br> `);
+        edificioA.agregarPropietario("Jose Antonio Lopez",1,1);
+        edificioA.agregarPropietario("Luisa Martinez",1,2);
+        edificioA.agregarPropietario("Marta Castellón",1,3);
+        edificioA.agregarPropietario("Antonio Pereira",2,2);
+     
+
+        //Listado de propietarios del edificio calle García Prieto número 58
+        document.write(` <br> imprimirPlantas(): <br> `);
+        edificioA.imprimirPlantas();
+     
+
+        // Agregamos 1 planta más al edificio A...
+         document.write(` <br> Agrego mas plantas() y agrego Propitario(): <br>`);
+         edificioA.agregarPlantasYPuertas(1,2);
+         edificioA.agregarPropietario("Pedro Meijide",3,2);
+               
+
+         //Listado de propietarios del edificio calle García Prieto número 58
+         document.write(` <br> imprimirPlantas(): <br> `);
+         edificioA.imprimirPlantas();
+
+
+         //This.plantas(7) - no existe
+       // This.plantas = new array(7) crea un array de 7 posiciones
+       //(this.plantas.lenght = 7)
+           
+        </script>
+    </body>
+</html>

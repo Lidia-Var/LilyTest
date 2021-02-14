@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejemplo </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body>
+    <div id="lista"> 
+        <h2>Lista de productos</h2>
+    </div>
+    <div id="lista2">
+        <h2>Lista de limpieza</h2>
+    </div>
+    <div id="carrito">
+        <h2>Lista de la compra</h2>
+    </div>
+    <div id="totalCompra"><em><b>Total a pagar:</b></em></div>
+    <script>
+//////////////////////////////////////////////////////////////////
+        class Producto{
+            constructor(id, nombre, precio, imagen, stock){
+                this.id=id;
+                this.nombre=nombre;
+                this.precio=precio;
+                this.imagen=imagen;
+                this.stock=stock;
+            }
+
+             reducirStock(unidades) {
+                    this.stock = this.stock - unidades;
+                }
+
+        }
+         var arrayProductos=[
+             new Producto(1, 'Patata',0.95,'./imagenes/patata.jpg',500),
+             new Producto(2, 'Cebolla', 1.5, './imagenes/cebolla.jpg', 75),
+            new Producto(3, 'Calabacin', 1.25, './imagenes/calabacin.jpg', 45),
+             new Producto(4, 'Grelos', 2.6, './imagenes/grelos.jpg', 25),
+         ];
+
+         
+
+//////////////////////////////////////////////////////////////////
+           class limpieza extends Producto {
+
+                constructor(id, nombre, precio, imagen, stock, marca, quimico, toxicidad) {
+                    super(id, nombre, precio, imagen, stock);
+                    this.marca = marca;
+                    this.quimico = quimico;
+                    this.toxicidad = toxicidad;
+                }
+            }
+            var arrayLimpieza = [
+                new Producto(0, 'Sanytol', 4, './imagenes/sanytol.jpg', 350, 'Sanytol', true, 50),
+                new Producto(1, 'Lejía', 2, './imagenes/lejia.jpg', 100, 'Conejo', false, 80),
+                new Producto(2, 'Don Limpio', 7, './imagenes/DonLimpio.jpg', 10, 'Don Limpio', true, 20),
+            ];
+
+//////////////////////////////////////////////////////////////////
+//CONCATENO LOS DOS ARRAYS
+const arrayCompleto=arrayProductos.concat(arrayLimpieza);
+//////////////////////////////////////////
+       
+       
+       let carrito = []; // array para almacenar los productos que vamos comprando
+       let total = 0;    // Total lista de la compra: suma de todos los artículos
+      
+       // Funciones
+       function mostrarProductos() {
+           let lista= document.getElementById("lista");
+           let tablaProductos = `<table border='1'>`;
+               tablaProductos +=`<tr><td> Nombre</td><td> Descripción</td><td> Precio</td><td> Stock</td>`;
+           for (let producto of arrayProductos) {
+               // Estructura creamos una nueva fila con tres columnas para mostrar producto, precio, imagen  
+               tablaProductos +=`<tr>` ;
+               // Columna nombre
+               tablaProductos += `<td> ${producto['nombre']}</td>`;
+               // Imagen
+               tablaProductos += `<td><img width='40' height='40' src="${producto['imagen']}"></td>`;
+               // Precio
+               tablaProductos += `<td> ${producto['precio']}€</td>`;
+               // Stock
+               tablaProductos += `<td> ${producto['stock']}Kg</td>`;
+               // cerramos fila
+               tablaProductos += `</tr>` ;
+           }
+           tablaProductos += `</table>`;
+           // una vez llenada la tabla la cerramos y la incluimos en el documento.
+           lista.innerHTML += tablaProductos;
+       }
+
+       function mostrarProductosLimpieza() {
+       let lista = document.getElementById("lista2");
+        let tablaLimpieza = `<table border='1'>`;
+        tablaLimpieza += `<tr><td> Nombre</td><td> Descripción</td><td> Precio</td><td> Stock</td>`;
+        for (let producto of arrayLimpieza) {
+            // Estructura creamos una nueva fila con tres columnas para mostrar producto, precio, imagen  
+            tablaLimpieza += `<tr>`;
+            // Columna nombre
+            tablaLimpieza += `<td> ${producto['nombre']}</td>`;
+            // Imagen
+            tablaLimpieza += `<td><img width='40' height='40' src="${producto['imagen']}"></td>`;
+            // Precio
+            tablaLimpieza += `<td> ${producto['precio']}€</td>`;
+            // Stock
+            tablaLimpieza += `<td> ${producto['stock']}Kg</td>`;
+            // cerramos fila
+            tablaLimpieza += `</tr>`;
+        }
+        tablaLimpieza += `</table>`;
+        // una vez llenada la tabla la cerramos y la incluimos en el documento.
+        lista.innerHTML += tablaLimpieza;
+       }
+
+
+    function anadirACarrito(articulo, cantidad) {
+        for (i = 0; i < arrayCompleto.length; i++) {
+            if (articulo.nombre == arrayCompleto[i].nombre) {
+                console.log("precio producto: " + arrayCompleto[i].precio);
+                for (j = 0; j < cantidad; j++) {
+                    carrito.push(articulo);
+
+                    //¡¡calcular total?????     
+                }
+                actualizarStock();
+            }
+        }
+        function actualizarStock() {
+            arrayCompleto[i].stock = arrayCompleto[i].stock - cantidad;
+            console.log("stock: " + arrayCompleto[i].stock);
+        }
+        // Añadimos un producto a nuestro carrito
+        // Calculo el total: tendré que buscar el elemento en el array para saber el precio del articulo
+        //calcularTotal(); El importe del articulo en función del precio
+        //actualizarStock(); // metodo del objeto para actualizar el stock
+
+    }
+        function anadirACarrito2(articulo, cantidad) {
+            for (i = 0; i < arrayCompleto.length; i++) {
+                if (articulo.nombre == arrayCompleto[i].nombre) {
+                    console.log("precio producto: " + arrayCompleto[i].precio);
+                    for (j = 0; j < cantidad; j++) {
+                        carrito.push(articulo);
+
+                        //¡¡calcular total?????     
+                    }
+                    arrayCompleto[i].reducirStock(cantidad);
+                }
+            }
+            // Añadimos un producto a nuestro carrito
+            // Calculo el total: tendré que buscar el elemento en el array para saber el precio del articulo
+            //calcularTotal(); El importe del articulo en función del precio
+            //actualizarStock(); // metodo del objeto para actualizar el stock
+
+        }
+
+       function mostrarCarrito() {
+           // mostrar mi lista de la compra
+           console.log(carrito);
+           for(i=0; i<carrito.length; i++){
+            document.getElementById("carrito").innerHTML += carrito[i].nombre + '<br/>';
+           }
+           
+       }
+       
+       function calcularTotal() {
+           total = 0;
+           // Recorremos el array del carrito  
+           // Para cada artículo obtener el importe a pagar y actualizar el total
+           // actualizamos el total en el carrito. Recuperamos la etiqueta toalCompra.....
+           for (i=0; i<carrito.length; i++){
+               total= carrito[i].precio+total;
+               console.log("total: "+total);
+           }
+           document.getElementById("totalCompra").innerHTML += total;
+       }
+
+      
+       // Inicio
+        
+       mostrarProductos();
+        mostrarProductosLimpieza();
+       // realizar compras......
+       anadirACarrito(arrayCompleto[0],2); //2patatas
+        anadirACarrito(arrayCompleto[3], 3); //grelos
+        anadirACarrito(arrayCompleto[5], 3); //lejia
+        anadirACarrito(arrayCompleto[4], 1); //sanytol
+
+        console.log("stock de patatas: " + arrayProductos[0].stock);
+    
+        mostrarProductos();
+       mostrarCarrito();
+       calcularTotal();
+</script>
+</body>
+</html>
